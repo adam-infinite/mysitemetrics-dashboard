@@ -38,7 +38,7 @@ export default function Login({ onLogin }) {
               <BarChart3 className="h-8 w-8 text-primary-foreground" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-foreground">Analytics Dashboard</h1>
+          <h1 className="text-3xl font-bold text-foreground">My Site Metrics</h1>
           <p className="text-muted-foreground mt-2">
             Sign in to view your website analytics
           </p>
@@ -101,21 +101,9 @@ export default function Login({ onLogin }) {
                 )}
               </Button>
             </form>
-            
-            {/* Demo credentials */}
-            <div className="mt-6 p-4 bg-secondary/50 rounded-lg">
-              <p className="text-sm font-medium text-secondary-foreground mb-2">
-                Demo Credentials:
-              </p>
-              <div className="text-sm text-muted-foreground space-y-1">
-                <p><strong>Admin:</strong> admin@analytics.com / admin123</p>
-                <p><strong>Client:</strong> Use registration or admin-created account</p>
-              </div>
-            </div>
           </CardContent>
         </Card>
       </div>
     </div>
   );
 }
-
