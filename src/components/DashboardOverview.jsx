@@ -28,8 +28,9 @@ import {
   Cell
 } from 'recharts';
 import apiService from '@/lib/api';
+import GA4ConnectionCard from './GA4ConnectionCard';
 
-export default function DashboardOverview({ website }) {
+export default function DashboardOverview({ website, onNavigateToGA4 }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -163,10 +164,21 @@ export default function DashboardOverview({ website }) {
             Last 30 days • Updated {lastUpdated?.toLocaleTimeString()}
           </p>
         </div>
-        <Button onClick={loadDashboardData} variant="outline" size="sm">
-          <RefreshCw className="mr-2 h-4 w-4" />
-          Refresh
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            onClick={onNavigateToGA4} 
+            variant="outline" 
+            size="sm"
+            className="gap-2"
+          >
+            <BarChart3 className="h-4 w-4" />
+            GA4 Dashboard
+          </Button>
+          <Button onClick={loadDashboardData} variant="outline" size="sm">
+            <RefreshCw className="mr-2 h-4 w-4" />
+            Refresh
+          </Button>
+        </div>
       </div>
 
       {/* Key Metrics Cards */}
@@ -349,7 +361,9 @@ export default function DashboardOverview({ website }) {
           </div>
         </CardContent>
       </Card>
+
+      {/* GA4 Connection Section */}
+      <GA4ConnectionCard />
     </div>
   );
 }
-
