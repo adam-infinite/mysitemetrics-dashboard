@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, BarChart3 } from 'lucide-react';
 import GA4ConnectionCard from './GA4ConnectionCard';
 import GA4PropertySelector from './GA4PropertySelector';
-import GA4AnalyticsDashboard from './GA4AnalyticsDashboard';
 
 export default function GA4Dashboard({ onBack }) {
   const [selectedProperty, setSelectedProperty] = useState(null);
@@ -76,14 +75,18 @@ export default function GA4Dashboard({ onBack }) {
             </CardHeader>
           </Card>
 
-          {/* Analytics Dashboard */}
-          <GA4AnalyticsDashboard 
-            property={selectedProperty.property}
-            account={selectedProperty.account}
-          />
+          {/* Analytics Dashboard - Coming in Phase 5 */}
+          <Card>
+            <CardContent className="py-12 text-center">
+              <BarChart3 className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Analytics Dashboard Coming Soon</h3>
+              <p className="text-muted-foreground">
+                Real-time GA4 analytics data will be displayed here in Phase 5
+              </p>
+            </CardContent>
+          </Card>
         </div>
       )}
     </div>
   );
 }
-
