@@ -11,7 +11,8 @@ import {
   TrendingDown,
   RefreshCw,
   Globe,
-  BarChart3
+  BarChart3,
+  Plus
 } from 'lucide-react';
 import { 
   AreaChart, 
@@ -39,6 +40,8 @@ export default function DashboardOverview({ website, onNavigateToGA4 }) {
   useEffect(() => {
     if (website) {
       loadDashboardData();
+    } else {
+      setLoading(false);
     }
   }, [website]);
 
@@ -75,9 +78,70 @@ export default function DashboardOverview({ website, onNavigateToGA4 }) {
     return `${(value * 100).toFixed(1)}%`;
   };
 
+  // Show GA4 section even when no website is selected
+  if (!website) {
+    return (
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex justify-between items-center">
+          <div>
+            <h3 className="text-2xl font-bold">Analytics Dashboard</h3>
+            <p className="text-muted-foreground">
+              Select a website to view analytics or connect your GA4 account below
+            </p>
+          </div>
+          <Button 
+            onClick={onNavigateToGA4} 
+            variant="outline" 
+            size="sm"
+            className="gap-2"
+          >
+            <BarChart3 className="h-4 w-4" />
+            GA4 Dashboard
+          </Button>
+        </div>
+
+        {/* No Website Selected */}
+        <Card>
+          <CardContent className="py-12 text-center">
+            <Globe className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-xl font-semibold mb-2">No Website Selected</h3>
+            <p className="text-muted-foreground mb-4">
+              Add a website to your account to start viewing analytics data
+            </p>
+            <Button className="gap-2">
+              <Plus className="h-4 w-4" />
+              Add Website
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* GA4 Connection Section - Always Visible */}
+        <GA4ConnectionCard />
+      </div>
+    );
+  }
+
   if (loading) {
     return (
       <div className="space-y-6">
+        {/* Header */}
+        <div className="flex justify-between items-center">
+          <div>
+            <h3 className="text-2xl font-bold">Analytics Overview</h3>
+            <p className="text-muted-foreground">Loading analytics data...</p>
+          </div>
+          <Button 
+            onClick={onNavigateToGA4} 
+            variant="outline" 
+            size="sm"
+            className="gap-2"
+          >
+            <BarChart3 className="h-4 w-4" />
+            GA4 Dashboard
+          </Button>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[...Array(4)].map((_, i) => (
             <Card key={i} className="animate-pulse">
@@ -91,27 +155,86 @@ export default function DashboardOverview({ website, onNavigateToGA4 }) {
             </Card>
           ))}
         </div>
+
+        {/* GA4 Connection Section - Always Visible */}
+        <GA4ConnectionCard />
       </div>
     );
   }
 
   if (error) {
     return (
-      <Card>
-        <CardContent className="p-6">
-          <div className="text-center">
-            <p className="text-destructive mb-4">Error loading dashboard data: {error}</p>
-            <Button onClick={loadDashboardData}>
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Retry
-            </Button>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex justify-between items-center">
+          <div>
+            <h3 className="text-2xl font-bold">Analytics Overview</h3>
+            <p className="text-muted-foreground">Error loading data</p>
           </div>
-        </CardContent>
-      </Card>
+          <Button 
+            onClick={onNavigateToGA4} 
+            variant="outline" 
+            size="sm"
+            className="gap-2"
+          >
+            <BarChart3 className="h-4 w-4" />
+            GA4 Dashboard
+          </Button>
+        </div>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="text-center">
+              <p className="text-destructive mb-4">Error loading dashboard data: {error}</p>
+              <Button onClick={loadDashboardData}>
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Retry
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* GA4 Connection Section - Always Visible */}
+        <GA4ConnectionCard />
+      </div>
     );
   }
 
-  if (!data) return null;
+  if (!data) {
+    return (
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex justify-between items-center">
+          <div>
+            <h3 className="text-2xl font-bold">Analytics Overview</h3>
+            <p className="text-muted-foreground">No data available</p>
+          </div>
+          <Button 
+            onClick={onNavigateToGA4} 
+            variant="outline" 
+            size="sm"
+            className="gap-2"
+          >
+            <BarChart3 className="h-4 w-4" />
+            GA4 Dashboard
+          </Button>
+        </div>
+
+        <Card>
+          <CardContent className="py-12 text-center">
+            <BarChart3 className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-xl font-semibold mb-2">No Analytics Data</h3>
+            <p className="text-muted-foreground">
+              No analytics data available for this website
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* GA4 Connection Section - Always Visible */}
+        <GA4ConnectionCard />
+      </div>
+    );
+  }
 
   // Extract metrics from the overview data
   const overviewMetrics = data.overview?.rows?.[0]?.metric_values || [];
@@ -362,7 +485,7 @@ export default function DashboardOverview({ website, onNavigateToGA4 }) {
         </CardContent>
       </Card>
 
-      {/* GA4 Connection Section */}
+      {/* GA4 Connection Section - Always Visible */}
       <GA4ConnectionCard />
     </div>
   );
