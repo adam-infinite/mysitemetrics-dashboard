@@ -172,4 +172,3 @@ export default function GA4PropertySelector({ onPropertySelect }) {
     </div>
   );
 }
-
